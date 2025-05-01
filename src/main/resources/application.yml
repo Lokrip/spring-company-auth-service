@@ -3,4 +3,4 @@ spring:
         name: spring-company-auth-serivce
 
 server:
-    port: 8002
+    port: 8001

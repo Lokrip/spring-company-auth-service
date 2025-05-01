@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.cloud.app</groupId>
-	<artifactId>spring-company-auth-serivce</artifactId>
+	<artifactId>spring-company-auth-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring-company-auth-serivce</name>
+	<name>spring-company-auth-service</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -40,6 +40,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+        </dependency>
 	</dependencies>
 
 	<build>
