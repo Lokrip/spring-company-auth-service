@@ -2,5 +2,12 @@ spring:
     application:
         name: spring-company-auth-serivce
 
+    security:
+        oauth2:
+          resourceserver:
+            jwt:
+              #указывает Issuer URI (т.е. адрес авторизующего сервера Keycloak) для JWT.
+              issuer-uri: http://localhost:8080/realms/barcode
+
 server:
-    port: 8001
+    port: 8081

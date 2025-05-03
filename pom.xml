@@ -41,6 +41,10 @@
 			<scope>test</scope>
 		</dependency>
 
+        <!--Как работает с resourse server
+        пример через frontend мы должны отправить запроса на keycloak чтобы получить токены
+        или же ключи аутенфикаций потом с этими ключами мы идем в этот resource server
+        и этот resource server эти ключи про валидирует и предоставит доступ или не предоставит-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
