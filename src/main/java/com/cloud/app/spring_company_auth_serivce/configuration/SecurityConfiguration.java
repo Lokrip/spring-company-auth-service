@@ -4,10 +4,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
@@ -16,13 +18,19 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityConfiguration {
+    @Value("${keycloak.jwt.roles-claim}")
+    private String rolesClaim;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         //Включаем Resourse server с его форматом серелизаций токена
         http.oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
         return http
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(c -> c
                     .requestMatchers("/error").permitAll()
+                    .requestMatchers("/api/v1/users/register").permitAll()
+                    .requestMatchers("/api/v1/tests/**").permitAll()
                     .requestMatchers("/manager.html").hasRole("MANAGER")
                     .anyRequest().authenticated())
                 .build();
@@ -45,7 +53,8 @@ public class SecurityConfiguration {
             //получаем стандартные прова и scope
             var authorities = jwtGrantedAuthoritiesConverter.convert(jwt);
             //получаем роли изи поля realm_access.roles
-            var roles = (List<String>) jwt.getClaimAsMap("realm_access").get("roles");
+            // var roles = (List<String>) jwt.getClaimAsMap("realm_access").get("roles");
+            var roles = jwt.getClaimAsStringList(rolesClaim);
 
             System.out.println(authorities); // -> [SCOPE_profile, SCOPE_email]
             System.out.println(roles); // -> [offline_access, ROLE_MANAGER, default-roles-barcode, uma_authorization]
